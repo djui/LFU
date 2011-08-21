@@ -1,5 +1,7 @@
 -module(lfu).
 
+-compile({no_auto_import, [ length/1 ]}).
+
 -export([ new/0
         , head/1
         , tail/1
@@ -25,14 +27,14 @@ head(List) -> List#l.head.
 tail(List) when List =:= #l{} ->
   undefined;
 tail(List) ->
-  Length = linkedlist:length(List) - 1,
+  Length = length(List) - 1,
   #l{head=next(head(List)), length=Length}.
 
 append(Data, List) when List =:= #l{} ->
   List#l{head=new_item(Data), length=1};
 append(Data, List) ->
   Item = append_item(Data, head(List)),
-  NewLength = linkedlist:length(List) + 1,
+  NewLength = length(List) + 1,
   List#l{head=Item, length=NewLength}.
 
 nth(N, _List) when N < 1 ->
@@ -45,7 +47,7 @@ nth(N, I, Item) when I =:= N ->
 nth(N, I, Item) ->
   nth(N, I + 1, next(Item)).
 
-last(List) -> nth(linkedlist:length(List), List).
+last(List) -> nth(length(List), List).
 
 length(List) -> List#l.length.
 
