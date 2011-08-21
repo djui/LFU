@@ -16,29 +16,31 @@
         , is_empty/1
         ]).
 
--record(i, { data     :: data()
-           , next     :: #i{}
+-record(i, { data     :: undefined | _
+           , next     :: pointer()
            }).
--record(l, { head     :: #i{}
+-record(l, { head     :: pointer()
            , length=0 :: non_neg_integer()
            }).
 
--type data() :: any() | undefined.
+-opaque lfu_cache(T)  :: #l{head=T}.
+-opaque lfu_item()    :: undefined | #i{}.
+-opaque pointer()     :: undefined | lfu_item().
 
 %%% API ================================================================
--spec new() -> #l{}.
+-spec new() -> lfu_cache(_T).
 new() -> #l{}.
 
--spec head(#l{}) -> data().
+-spec head(lfu_cache(T)) -> T | undefined.
 head(List) -> List#l.head.
 
--spec tail(#l{}) -> data().
+-spec tail(lfu_cache(T)) -> T | undefined.
 tail(List) when List =:= #l{} -> undefined;
 tail(List) ->
   Length = length(List) - 1,
   #l{head=next(head(List)), length=Length}.
 
--spec append(data(), #l{}) -> data().
+-spec append(T, lfu_cache(T)) -> _ | undefined.
 append(Data, List) when List =:= #l{} ->
   List#l{head=new_item(Data), length=1};
 append(Data, List) ->
@@ -46,17 +48,17 @@ append(Data, List) ->
   NewLength = length(List) + 1,
   List#l{head=Item, length=NewLength}.
 
--spec nth(pos_integer(), #l{}) -> data().
+-spec nth(pos_integer(), lfu_cache(T)) -> T | undefined.
 nth(N, _List) when N < 1 -> undefined;
 nth(N, List) -> nth(N, 1, head(List)).
 
--spec last(#l{}) -> data().
+-spec last(lfu_cache(T)) -> T | undefined.
 last(List) -> nth(length(List), List).
 
--spec length(#l{}) -> non_neg_integer().
+-spec length(lfu_cache(_T)) -> non_neg_integer().
 length(List) -> List#l.length.
 
--spec is_empty(#l{}) -> data().
+-spec is_empty(lfu_cache(_T)) -> boolean().
 is_empty(List) -> List =:= new().
 
 %%% Internals ----------------------------------------------------------
@@ -82,4 +84,11 @@ head_test()     -> L = new(), undefined = head(L).
 tail_test()     -> L = new(), undefined = tail(L).
 is_empty_test() -> L = new(), true = is_empty(L).
 
+prop_append_remove() ->
+  ?FORALL({E,L},
+          {_,lfu_cache(_)},
+          begin
+            L2 = remove(E, append(E,L)),
+            L =:= L2
+          end).
 -endif.
