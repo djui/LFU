@@ -71,6 +71,9 @@ next(Item) -> Item#i.next.
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
 
-new_test() -> #l{} = new().
+new_test()      -> #l{} = new().
+head_test()     -> L = new(), undefined = head(L).
+tail_test()     -> L = new(), undefined = tail(L).
+is_empty_test() -> L = new(), true = is_empty(L).
 
 -endif.
