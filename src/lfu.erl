@@ -49,6 +49,16 @@ length(List) -> List#l.length.
 
 is_empty(List) -> List =:= new().
 
+%%% Officials ----------------------------------------------------------
+new_freq_node() -> throw(nyi).
+new_lfu_item()  -> throw(nyi).
+new_lfu_cache() -> throw(nyi).
+get_new_node()  -> throw(nyi).
+delete_node()   -> throw(nyi).
+access()        -> throw(nyi).
+insert()        -> throw(nyi).
+get_lfu_item()  -> throw(nyi).
+
 %%% Internals ----------------------------------------------------------
 append_item(Data, Item) when Item#i.next =:= undefined ->
   Item#i{next=new_item(Data)};
