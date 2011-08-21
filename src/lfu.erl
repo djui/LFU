@@ -46,10 +46,6 @@ nth(N, _List) when N < 1 ->
 nth(N, List) ->
   nth(N, 1, head(List)).
 
-nth(N, I, Item) when I =:= N ->
-  Item;
-nth(N, I, Item) ->
-  nth(N, I + 1, next(Item)).
 
 last(List) -> nth(length(List), List).
 
@@ -66,6 +62,9 @@ append_item(Data, Item) ->
   Item#i{next=append_item(Data, next(Item))}.
 
 next(Item) -> Item#i.next.
+
+nth(N, I, Item) when I =:= N -> Item;
+nth(N, I, Item) -> nth(N, I + 1, next(Item)).
 
 %%% Tests ==============================================================
 -ifdef(TEST).
