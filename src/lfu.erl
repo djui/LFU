@@ -17,10 +17,8 @@
            , next
            }).
 
-%%% ====================================================================
+%%% API ================================================================
 new() -> #l{}.
-
-new_item(Data) -> #i{data=Data}.
 
 head(List) -> List#l.head.
 
@@ -37,13 +35,6 @@ append(Data, List) ->
   NewLength = linkedlist:length(List) + 1,
   List#l{head=Item, length=NewLength}.
 
-append_item(Data, Item) when Item#i.next == undefined ->
-  Item#i{next=new_item(Data)};
-append_item(Data, Item) ->
-  Item#i{next=append_item(Data, next(Item))}.
-
-next(Item) -> Item#i.next.
-
 nth(N, _List) when N < 1 ->
   undefined;
 nth(N, List) ->
@@ -58,9 +49,19 @@ last(List) -> nth(linkedlist:length(List), List).
 
 length(List) -> List#l.length.
 
-is_empty(List) -> List == new().
+is_empty(List) -> List =:= new().
 
-%%% ====================================================================
+%%% Internals ----------------------------------------------------------
+new_item(Data) -> #i{data=Data}.
+
+append_item(Data, Item) when Item#i.next =:= undefined ->
+  Item#i{next=new_item(Data)};
+append_item(Data, Item) ->
+  Item#i{next=append_item(Data, next(Item))}.
+
+next(Item) -> Item#i.next.
+
+%%% Tests ==============================================================
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
 
