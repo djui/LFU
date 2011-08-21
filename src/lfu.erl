@@ -23,17 +23,22 @@
            , next
            }).
 
+-type item() :: any() | undefined.
+
 %%% API ================================================================
+-spec new() -> #l{}.
 new() -> #l{}.
 
+-spec head(#l{}) -> item().
 head(List) -> List#l.head.
 
-tail(List) when List =:= #l{} ->
-  undefined;
+-spec tail(#l{}) -> item().
+tail(List) when List =:= #l{} -> undefined;
 tail(List) ->
   Length = length(List) - 1,
   #l{head=next(head(List)), length=Length}.
 
+-spec append(item(), #l{}) -> item().
 append(Data, List) when List =:= #l{} ->
   List#l{head=new_item(Data), length=1};
 append(Data, List) ->
@@ -41,16 +46,17 @@ append(Data, List) ->
   NewLength = length(List) + 1,
   List#l{head=Item, length=NewLength}.
 
-nth(N, _List) when N < 1 ->
-  undefined;
-nth(N, List) ->
-  nth(N, 1, head(List)).
+-spec nth(pos_integer(), #l{}) -> item().
+nth(N, _List) when N < 1 -> undefined;
+nth(N, List) -> nth(N, 1, head(List)).
 
-
+-spec last(#l{}) -> item().
 last(List) -> nth(length(List), List).
 
+-spec length(#l{}) -> non_neg_integer().
 length(List) -> List#l.length.
 
+-spec is_empty(#l{}) -> item().
 is_empty(List) -> List =:= new().
 
 %%% Internals ----------------------------------------------------------
