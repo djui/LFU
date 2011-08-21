@@ -22,13 +22,13 @@ new() -> #l{}.
 
 head(List) -> List#l.head.
 
-tail(List) when List == #l{} ->
+tail(List) when List =:= #l{} ->
   undefined;
 tail(List) ->
   Length = linkedlist:length(List) - 1,
   #l{head=next(head(List)), length=Length}.
 
-append(Data, List) when List == #l{} ->
+append(Data, List) when List =:= #l{} ->
   List#l{head=new_item(Data), length=1};
 append(Data, List) ->
   Item = append_item(Data, head(List)),
@@ -40,7 +40,7 @@ nth(N, _List) when N < 1 ->
 nth(N, List) ->
   nth(N, 1, head(List)).
 
-nth(N, I, Item) when I == N ->
+nth(N, I, Item) when I =:= N ->
   Item;
 nth(N, I, Item) ->
   nth(N, I + 1, next(Item)).
@@ -65,6 +65,6 @@ next(Item) -> Item#i.next.
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
 
-new_test() -> #l{} = new(), ok.
+new_test() -> #l{} = new().
 
 -endif.
