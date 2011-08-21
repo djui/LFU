@@ -1,4 +1,4 @@
-%%% @doc O(1) LFU cache implementation
+%%% @doc O(1) LFU cache implementation. dict() is used for the hash.
 %%% @reference K. Shah, A. Mitra, and D. Matani - An O(1) algorithm for
 %%% implementing the LFU cache eviction scheme, URL:
 %%% http://dhruvbird.com/lfu.pdf
