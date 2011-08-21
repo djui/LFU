@@ -1,0 +1,8 @@
+{application,lfu,
+             [{description,"O(1) LFU cache Implementation"},
+              {vsn,"1"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {mod,{[lfu]}},
+              {env,[]},
+              {modules,[lfu]}]}.
