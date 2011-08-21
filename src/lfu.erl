@@ -16,11 +16,11 @@
         , is_empty/1
         ]).
 
--record(l, { head
-           , length = 0
+-record(i, { data     :: data()
+           , next     :: #i{}
            }).
--record(i, { data
-           , next
+-record(l, { head     :: #i{}
+           , length=0 :: non_neg_integer()
            }).
 
 -type data() :: any() | undefined.
