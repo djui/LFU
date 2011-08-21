@@ -74,6 +74,7 @@ nth(N, I, Item) -> nth(N, I + 1, next(Item)).
 
 %%% Tests ==============================================================
 -ifdef(TEST).
+-include_lib("proper/include/proper.hrl").
 -include_lib("eunit/include/eunit.hrl").
 
 new_test()      -> #l{} = new().
